@@ -1,0 +1,48 @@
+{
+    "name": "bertshang/dameng",
+    "description": "DAMENG DB driver for Laravel 5 via PDO_DM",
+    "keywords" : ["laravel5","laravel","dameng","pdo_dm"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "bertshang",
+            "email": "359352960@qq.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.0.0",
+        "illuminate/support": "5.5.*",
+        "illuminate/database": "5.5.*",
+    },
+    "require-dev": {
+        "mockery/mockery": "~1.0",
+        "scrutinizer/ocular": "~1.1",
+        "phpunit/phpunit": "~6.0"
+    },
+    "autoload": {
+        "files": [
+            "src/helper.php"
+        ],
+        "psr-4": {
+            "Bertshang\\": "src/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "5.5-dev"
+        },
+        "laravel": {
+            "providers": [
+                "Bertshang\\Dameng\\DmServiceProvider"
+            ]
+        }
+    },
+    "scripts": {
+
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
