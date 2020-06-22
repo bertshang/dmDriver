@@ -40,29 +40,6 @@ class DmGrammar extends Grammar
         return $this->compileSelect($q);
     }
 
-    /**
-     * Compile a select query into SQL.
-     *
-     * @param  \Illuminate\Database\Query\Builder
-     * @return string
-     */
-    public function compileSelect(Builder $query)
-    {
-        if (is_null($query->columns)) {
-            $query->columns = ['*'];
-        }
-
-        $components = $this->compileComponents($query);
-
-        // If an offset is present on the query, we will need to wrap the query in
-        // a big "ANSI" offset syntax block. This is very nasty compared to the
-        // other database systems but is necessary for implementing features.
-        if ($this->isPaginationable($query, $components)) {
-            return $this->compileAnsiOffset($query, $components);
-        }
-
-        return trim($this->concatenate($components));
-    }
 
     /**
      * @param Builder $query
