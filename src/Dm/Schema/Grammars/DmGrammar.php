@@ -5,7 +5,7 @@ namespace Bertshang\Dameng\Schema\Grammars;
 use Illuminate\Support\Str;
 use Illuminate\Support\Fluent;
 use Illuminate\Database\Connection;
-use Yajra\Oci8\DmReservedWords;
+use Bertshang\Dameng\DmReservedWords;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Schema\Grammars\Grammar;
 
