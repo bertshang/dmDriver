@@ -40,6 +40,50 @@ class DmGrammar extends Grammar
         return $this->compileSelect($q);
     }
 
+    /**
+     * Compile a select query into SQL.
+     *
+     * @param  \Illuminate\Database\Query\Builder
+     * @return string
+     */
+    public function compileSelect(Builder $query)
+    {
+        if ($query->unions && $query->aggregate) {
+            return $this->compileUnionAggregate($query);
+        }
+
+        // If the query does not have any columns set, we'll set the columns to the
+        // * character to just get all of the columns from the database. Then we
+        // can build the query and concatenate all the pieces together as one.
+        $original = $query->columns;
+
+        if (is_null($query->columns)) {
+            $query->columns = ['*'];
+        }
+
+        $components = $this->compileComponents($query);
+
+        // To compile the query, we'll spin through each component of the query and
+        // see if that component exists. If it does we'll just call the compiler
+        // function for the component which is responsible for making the SQL.
+        $sql = trim($this->concatenate($components));
+
+        // If an offset is present on the query, we will need to wrap the query in
+        // a big "ANSI" offset syntax block. This is very nasty compared to the
+        // other database systems but is necessary for implementing features.
+        if ($this->isPaginationable($query, $components)) {
+            return $this->compileAnsiOffset($query, $components);
+        }
+
+        if ($query->unions) {
+            $sql = $this->wrapUnion($sql).' '.$this->compileUnions($query);
+        }
+
+        $query->columns = $original;
+
+        return $sql;
+    }
+
 
     /**
      * @param Builder $query
